@@ -10,7 +10,7 @@ async function testOpenRouter() {
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer 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',
+                'Authorization': 'Bearer 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',
                 'Content-Type': 'application/json',
                 'HTTP-Referer': 'http://localhost:3000',
                 'X-Title': 'AsetSantun'
