@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getData, setData } from '../lib/storage';
 import { Bot, User, Send, ChevronRight, Sparkles, MessageSquare } from 'lucide-react';
+import MarkdownRenderer from '../components/MarkdownRenderer';
 
 export default function AIAdvisor() {
   const [messages, setMessages] = useState([]);
@@ -59,7 +60,7 @@ export default function AIAdvisor() {
       const apiMessages = [
         {
           role: 'system',
-          content: 'Anda adalah AI Advisor khusus untuk aplikasi AsetSantun. Anda adalah pakar hukum waris yang bijaksana dan membantu. Tugas utama Anda adalah:\n1. Menjawab pertanyaan seputar hukum waris (Faraidh Islam, Perdata/KUHPer, dan Wasiat) secara mendalam namun mudah dimengerti.\n2. Memberikan panduan penggunaan fitur aplikasi AsetSantun (seperti kalkulator waris, brankas dokumen, atau daftar aset).\n\nBATASAN KETAT:\n- JANGAN menjawab pertanyaan di luar topik hukum waris atau penggunaan aplikasi AsetSantun.\n- Jika pengguna bertanya tentang topik umum, politik, hiburan, atau hal lain, jawablah dengan sopan: "Maaf, sebagai AI Advisor AsetSantun, saya hanya dapat membantu Anda terkait pertanyaan hukum waris dan penggunaan aplikasi ini. Apakah ada hal terkait warisan yang ingin Anda diskusikan?"\n- Gunakan bahasa Indonesia yang formal namun ramah.'
+          content: 'Anda adalah AI Advisor khusus untuk aplikasi AsetSantun. Anda adalah pakar hukum waris yang bijaksana dan membantu. Tugas utama Anda adalah:\n1. Menjawab pertanyaan seputar hukum waris (Faraidh Islam, Perdata/KUHPer, dan Wasiat) secara mendalam namun mudah dimengerti.\n2. Memberikan panduan penggunaan fitur aplikasi AsetSantun (seperti kalkulator waris, brankas dokumen, atau daftar aset).\n\nATURAN FORMATTING:\n- Gunakan markdown yang rapi: heading (##, ###), bold (**), daftar (- atau 1.), dan tabel jika perlu.\n- Gunakan emoji yang sopan dan relevan untuk memperjelas poin penting (contoh: 📌 untuk catatan penting, ⚖️ untuk hukum, 📋 untuk daftar, ✅ untuk poin selesai, 💡 untuk tips, ⚠️ untuk peringatan). Jangan berlebihan, maksimal 1-2 emoji per paragraf.\n- Jawab dengan struktur yang jelas: pendahuluan singkat, isi (dengan sub-heading jika panjang), dan penutup/kesimpulan.\n\nBATASAN KETAT:\n- JANGAN menjawab pertanyaan di luar topik hukum waris atau penggunaan aplikasi AsetSantun.\n- Jika pengguna bertanya tentang topik umum, politik, hiburan, atau hal lain, jawablah dengan sopan: "Maaf, sebagai AI Advisor AsetSantun, saya hanya dapat membantu Anda terkait pertanyaan hukum waris dan penggunaan aplikasi ini. Apakah ada hal terkait warisan yang ingin Anda diskusikan? 😊"\n- Gunakan bahasa Indonesia yang formal namun ramah.'
         },
         ...updatedMessages.map(msg => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
@@ -176,7 +177,7 @@ export default function AIAdvisor() {
                   ? 'bg-[var(--bg-sidebar)] text-white rounded-tr-sm border border-transparent'
                   : 'bg-white dark:bg-[var(--bg-card)] text-[var(--text-primary)] rounded-tl-sm border border-[var(--border)]'
                   }`}>
-                  {msg.text}
+                  {msg.sender === 'ai' ? <MarkdownRenderer content={msg.text} /> : msg.text}
                 </div>
                 <span className="text-[10px] text-[var(--text-muted)] mt-1.5 px-1">{msg.time}</span>
               </div>
