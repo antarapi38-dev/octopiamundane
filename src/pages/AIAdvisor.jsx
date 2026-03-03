@@ -67,23 +67,20 @@ export default function AIAdvisor() {
         }))
       ];
 
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      // Panggil backend proxy kita — API key aman di server, tidak terekspos di browser/GitHub
+      const response = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: {
-          // GANTI API KEY ANDA DI BARIS INI:
-          'Authorization': 'Bearer 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',
-          'Content-Type': 'application/json',
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'AsetSantun'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'arcee-ai/trinity-large-preview:free',
           messages: apiMessages
         })
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || 'Gagal menghubungi server AI');
       }
 
       const data = await response.json();
