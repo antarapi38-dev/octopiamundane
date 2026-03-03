@@ -1,9 +1,17 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
+    // Handle CORS preflight
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        return res.status(204).end();
+    }
+
     // Only allow POST
     if (req.method !== 'POST') {
-        res.setHeader('Allow', 'POST');
+        res.setHeader('Allow', 'POST, OPTIONS');
         return res.status(405).json({ success: false, message: 'Method Not Allowed' });
     }
 
