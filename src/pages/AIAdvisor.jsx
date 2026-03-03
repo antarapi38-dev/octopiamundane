@@ -71,7 +71,7 @@ export default function AIAdvisor() {
         method: 'POST',
         headers: {
           // GANTI API KEY ANDA DI BARIS INI:
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.origin,
           'X-Title': 'AsetSantun'
