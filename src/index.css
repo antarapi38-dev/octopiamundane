@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Roboto", sans-serif;
+  
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-sidebar: var(--bg-sidebar);
+  --color-accent: var(--accent);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-border-color: var(--border);
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer base {
+
+  :root {
+    --bg-primary: #FAF7F2;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #1E1810;
+    --accent: #B8902A;
+    --text-primary: #1E1810;
+    --text-muted: #9A8E80;
+    --border: #E8DFC8;
+  }
+
+  .dark {
+    --bg-primary: #0D1117;
+    --bg-card: #131920;
+    --bg-sidebar: #131920;
+    --accent: #D4A843;
+    --text-primary: #E8E0D0;
+    --text-muted: #8A8070;
+    --border: rgba(201, 168, 76, 0.15);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
