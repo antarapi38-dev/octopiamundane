@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getData, setData } from '../lib/storage';
-import { Bot, User, Send, ChevronRight, Sparkles, MessageSquare } from 'lucide-react';
+import { Bot, User, Send, ChevronRight, Sparkles, MessageSquare, X, BookOpen } from 'lucide-react';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 
 export default function AIAdvisor() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const messagesEndRef = useRef(null);
 
   const initialMessages = [
@@ -118,19 +119,30 @@ export default function AIAdvisor() {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-8rem)]">
+    <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 h-[calc(100vh-8rem)] relative">
+      {/* Mobile Sidebar Overlay */}
+      {showSidebar && (
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setShowSidebar(false)} />
+      )}
+
       {/* Sidebar Topik */}
-      <div className="w-full lg:w-64 flex-shrink-0 bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] shadow-sm p-4 flex flex-col h-auto lg:h-full">
-        <div className="flex items-center gap-2 mb-6 px-2">
-          <Sparkles className="w-5 h-5 text-[var(--accent)]" />
-          <h3 className="font-serif text-lg font-bold">Topik Diskusi</h3>
+      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-72 lg:w-64 flex-shrink-0 bg-[var(--bg-card)] lg:rounded-2xl border-r lg:border border-[var(--border)] shadow-lg lg:shadow-sm p-4 flex flex-col transition-transform duration-300 ease-in-out lg:h-full`}>
+        <div className="flex items-center justify-between mb-6 px-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[var(--accent)]" />
+            <h3 className="font-serif text-lg font-bold">Topik Diskusi</h3>
+          </div>
+          <button onClick={() => setShowSidebar(false)} className="lg:hidden p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+            <X className="w-5 h-5 text-[var(--text-muted)]" />
+          </button>
         </div>
 
         <div className="space-y-2 flex-1 overflow-y-auto hide-scrollbar">
           {topics.map(topic => (
             <button
               key={topic.id}
-              onClick={() => setInput(topic.query)}
+              onClick={() => { setInput(topic.query); setShowSidebar(false); }}
               className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors text-left group border border-transparent hover:border-[var(--border)]"
             >
               <span className="text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{topic.label}</span>
@@ -147,11 +159,14 @@ export default function AIAdvisor() {
       </div>
 
       {/* Chat Window */}
-      <div className="flex-1 bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] shadow-sm flex flex-col h-[500px] lg:h-full overflow-hidden relative">
+      <div className="flex-1 bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] shadow-sm flex flex-col min-h-0 h-full overflow-hidden relative">
         {/* Chat Header */}
-        <div className="p-4 border-b border-[var(--border)] bg-gray-100 dark:bg-gray-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#B8902A] to-[#D4A843] flex items-center justify-center text-white shadow-sm">
-            <Bot className="w-5 h-5" />
+        <div className="p-3 sm:p-4 border-b border-[var(--border)] bg-gray-100 dark:bg-gray-800 flex items-center gap-3">
+          <button onClick={() => setShowSidebar(true)} className="lg:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+            <BookOpen className="w-4 h-4 text-[var(--text-muted)]" />
+          </button>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#B8902A] to-[#D4A843] flex items-center justify-center text-white shadow-sm">
+            <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
             <h3 className="font-bold text-sm">Waris AI Advisor</h3>
